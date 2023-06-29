@@ -1,12 +1,25 @@
 package com.eCommerce.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.eCommerce.model.Producto;
+import com.eCommerce.model.Usuario;
+import com.eCommerce.service.ProductoService;
 
 @Controller
 @RequestMapping("/productos")
 public class ProductoController {
+	
+	private final Logger LOGGER = LoggerFactory.getLogger(ProductoController.class);
+	
+	@Autowired
+	private ProductoService productoService;
 	
 	@GetMapping("")
 	public String show () {
@@ -16,5 +29,15 @@ public class ProductoController {
 	@GetMapping("/create")
 	public String create () {
 		return "productos/create";
+	}
+	
+	@PostMapping("/save")
+	public String save (Producto producto) {
+		LOGGER.info("Este es el obj Producto {}", producto);
+		Usuario u = new Usuario ();
+		u.setId(1);
+		producto.setUsuario(u);
+		productoService.save(producto);
+		return "redirect:/productos";
 	}
 }
