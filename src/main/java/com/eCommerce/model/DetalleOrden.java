@@ -11,6 +11,12 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Clase que mapea la entidad DetalleOrden
+ * @author Miguel
+ *
+ */
+
 @Data
 @Getter
 @Setter

@@ -5,6 +5,12 @@ import java.util.Optional;
 
 import com.eCommerce.model.Producto;
 
+/**
+ * Clase service donde se declaran los métodos a utilizar en el impl
+ * @author Miguel
+ *
+ */
+
 public interface ProductoService {
 	
 	public Producto save(Producto producto);

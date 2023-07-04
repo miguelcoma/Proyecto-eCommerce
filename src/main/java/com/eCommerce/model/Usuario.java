@@ -13,6 +13,12 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Clase que mapea la entidad Usuario
+ * @author Miguel
+ *
+ */
+
 @Data
 @Getter
 @Setter

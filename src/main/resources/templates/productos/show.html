@@ -58,8 +58,8 @@
 						<td th:text=${p.descripcion}></td>
 						<td th:text=${p.cantidad}></td>
 						<td th:text=${p.precio}></td>
-						<td><a class="btn btn-warning" href="">Editar</a></td>
-						<td><a class="btn btn-danger" href="">Eliminar</a></td>
+						<td><a class="btn btn-warning" th:href="@{productos/edit/{id} (id=${p.id})}">Editar</a></td>
+						<td><a class="btn btn-danger" th:href="@{productos/delete/{id} (id=${p.id})}">Eliminar</a></td>
 					</tr>
 				</tbody>
 			</table>
@@ -69,7 +69,6 @@
 
 		<!-- Footer -->
 		<div th:include="administrador/template_admin.html::footer"></div>
-
 
 			<!-- Bootstrap core JavaScript -->
 			<script th:src="@{vendor/jquery/jquery.min.js}"></script>

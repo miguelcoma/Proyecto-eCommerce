@@ -1,17 +1,27 @@
 package com.eCommerce.controller;
 
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.eCommerce.model.Producto;
 import com.eCommerce.model.Usuario;
 import com.eCommerce.service.ProductoService;
+
+/**
+ * Clase controller para el control de flujo de cada petición
+ * @author Miguel
+ *
+ */
 
 @Controller
 @RequestMapping("/productos")
@@ -42,4 +52,24 @@ public class ProductoController {
 		productoService.save(producto);
 		return "redirect:/productos";
 	}
+	
+	@GetMapping ("/edit/{id}")
+	public String edit (@PathVariable Integer id, Model model) {
+		Producto producto = new Producto();
+		Optional<Producto> optionalProducto = productoService.get(id);
+		producto = optionalProducto.get();
+		
+		LOGGER.info("Producto buscado: {}", producto);
+		
+		model.addAttribute("producto", producto);
+		
+		return "/productos/edit";
+	}
+	
+	@PostMapping ("/update")
+	public String update (Producto producto) {
+		productoService.update(producto);
+		return "redirect:/productos"; 
+	}
+	
 }

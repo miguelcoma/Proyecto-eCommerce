@@ -11,6 +11,12 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Clase que mapea la Entidad Producto
+ * @author Miguel Colin
+ *
+ */
+
 @Data
 @Getter
 @Setter
@@ -31,4 +37,12 @@ public class Producto {
 	//Campo para hacer la relación con la tabla usuarios
 	@ManyToOne
 	private Usuario usuario;
+
+	@Override
+	public String toString() {
+		return "Producto [id=" + id + ", nombre=" + nombre + ", descripcion=" + descripcion + ", imagen=" + imagen
+				+ ", precio=" + precio + ", cantidad=" + cantidad + "]";
+	}
+	
+	
 }
