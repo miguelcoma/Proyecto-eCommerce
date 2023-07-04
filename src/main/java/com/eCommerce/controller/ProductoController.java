@@ -72,4 +72,16 @@ public class ProductoController {
 		return "redirect:/productos"; 
 	}
 	
+	@GetMapping("/delete/{id}")
+	public String delete (@PathVariable Integer id) {
+//		Producto producto = new Producto();
+//		Optional<Producto> optionalProducto = productoService.get(id);
+//		producto = optionalProducto.get();
+//		
+//		LOGGER.info("Producto a eliminar: {}", producto);
+		
+		productoService.delete(id);
+		
+		return "redirect:/productos";
+	}
 }
