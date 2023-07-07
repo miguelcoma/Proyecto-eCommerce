@@ -25,6 +25,7 @@ import lombok.Setter;
 @Entity
 @Table(name="usuarios")
 public class Usuario {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -44,5 +45,5 @@ public class Usuario {
 	//Campo para relacionar con la tabla productos
 	@OneToMany (mappedBy = "usuario")
 	private List<Orden> ordenes;
-
+	
 }

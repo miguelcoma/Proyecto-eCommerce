@@ -1,5 +1,6 @@
 package com.eCommerce.controller;
 
+import java.io.IOException;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -7,15 +8,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.eCommerce.model.Producto;
 import com.eCommerce.model.Usuario;
 import com.eCommerce.service.ProductoService;
+import com.eCommerce.service.UploadFileService;
 
 /**
  * Clase controller para el control de flujo de cada petición
@@ -32,6 +35,9 @@ public class ProductoController {
 	@Autowired
 	private ProductoService productoService;
 	
+	@Autowired
+	private UploadFileService upload;
+	
 	@GetMapping("")
 	public String show (Model model) {
 		model.addAttribute("productos", productoService.findAll());
@@ -44,11 +50,20 @@ public class ProductoController {
 	}
 	
 	@PostMapping("/save")
-	public String save (Producto producto) {
+	public String save (Producto producto, @RequestParam ("img") MultipartFile file) throws IOException {
 		LOGGER.info("Este es el obj Producto {}", producto);
 		Usuario u = new Usuario ();
 		u.setId(1);
 		producto.setUsuario(u);
+		
+		//IMAGE
+		if (producto.getId() == null) {
+			String nombreImagen = upload.saveImage(file);
+			producto.setImagen(nombreImagen);
+		} else {
+
+		}
+		
 		productoService.save(producto);
 		return "redirect:/productos";
 	}
@@ -67,7 +82,22 @@ public class ProductoController {
 	}
 	
 	@PostMapping ("/update")
-	public String update (Producto producto) {
+	public String update (Producto producto, @RequestParam ("img") MultipartFile file) throws IOException {
+		if(file.isEmpty()) {
+			Producto p = new Producto ();
+			p = productoService.get(producto.getId()).get();
+			producto.setImagen(p.getImagen());
+		} else {
+			Producto p = new Producto();
+			p = productoService.get(producto.getId()).get();
+			if (!p.getImagen().equals("default.jpg")) {
+				upload.deleteImage(p.getImagen());
+			}
+			
+			String nombreImagen = upload.saveImage(file);
+			producto.setImagen(nombreImagen);
+		}
+		
 		productoService.update(producto);
 		return "redirect:/productos"; 
 	}
@@ -79,7 +109,12 @@ public class ProductoController {
 //		producto = optionalProducto.get();
 //		
 //		LOGGER.info("Producto a eliminar: {}", producto);
+		Producto p = new Producto();
+		p = productoService.get(id).get();
 		
+		if (!p.getImagen().equals("default.jpg")) {
+			upload.deleteImage(p.getImagen());
+		}
 		productoService.delete(id);
 		
 		return "redirect:/productos";

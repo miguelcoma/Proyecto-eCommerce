@@ -25,7 +25,7 @@ public class UploadFileService {
 	}
 	
 	public void deleteImage (String nombre) {
-		String ruta = "folder//";
+		String ruta = "images//";
 		File file = new File(ruta + nombre);
 		file.delete();
 	}
